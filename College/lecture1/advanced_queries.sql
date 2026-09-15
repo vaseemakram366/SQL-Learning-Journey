@@ -46,3 +46,34 @@ JOIN DEPARTMENT D
 JOIN EMPLOYEE E
     ON D.Mgr_ssn = E.Ssn
 WHERE P.Plocation = 'Stafford';
+
+-- Make a list of all project no. That involves an employee whose last name is smith either as a worker or as a manager of the department 
+-- For each employee retrieve the employees first and last name and the first and last name of his and her
+-- 1.rojects involving an employee whose last name is Smith
+(SELECT DISTINCT P.PNUMBER
+FROM PROJECT P
+JOIN DEPARTMENT D
+    ON P.DNUM = D.DNUMBER
+JOIN EMPLOYEE E
+    ON D.MGRSSN = E.SSN
+WHERE E.LNAME = 'Smith')
+
+UNION
+
+(SELECT DISTINCT P.PNUMBER
+FROM PROJECT P
+JOIN WORKS_ON W
+    ON P.PNUMBER = W.PNO
+JOIN EMPLOYEE E
+    ON W.ESSN = E.SSN
+WHERE E.LNAME = 'Smith');
+
+-- 2.For each employee, retrieve employee's first/last name + immediate supervisor's first/last name
+SELECT
+    E.FNAME AS Employee_First_Name,
+    E.LNAME AS Employee_Last_Name,
+    S.FNAME AS Supervisor_First_Name,
+    S.LNAME AS Supervisor_Last_Name
+FROM EMPLOYEE E
+JOIN EMPLOYEE S
+    ON E.SUPERSSN = S.SSN;
